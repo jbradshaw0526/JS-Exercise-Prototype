@@ -96,9 +96,24 @@ function Car(model, milesPerGallon) {
 Car.prototype.fill = function(gallons){
   this.tank = this.tank + gallons;
 }
+Car.prototype.drive = function(distance){
+  const drivableMiles = this.tank * this.milesPerGallon;
+
+  if(distance <= drivableMiles){
+    this.odometer = this.odometer + distance;
+    this.tank = this.tank - (distance/this.milesPerGallon);
+}else{
+  this.odometer = this.odometer + drivableMiles;
+  this.tank = 0;
+  return`I ran out of fuel at ${this.odometer} miles`
+  }
+}
+
 
 const ford = new Car ('ford', 25);
-console.log(ford.fill, '20');
+console.log(ford.fill(20));
+console.log(ford.tank);
+console.log(ford.drive(250));
 
 
 
@@ -110,18 +125,27 @@ console.log(ford.fill, '20');
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
+function Baby(name, age, favoriteToy) {
+  this.favoriteToy = favoriteToy;
+  Person.call(this,name,age);
  
+}
+Baby.prototype = Object.create(Person.prototype)
+
+
+Baby.prototype.play = function() {
+  return `Playing with ${this.favoriteToy}`
+
 }
 
 
 /* 
   TASK 4
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. window or global binding which displays the window when used just this and is an error
+  2. implicit binding which looks at . and calls the function to the left of it
+  3. new binding specified instance that an objec is created and returned by the constructor
+  4. explicit binding is when we call or apply method this is explicitly defined
 */
 
 
